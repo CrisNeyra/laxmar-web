@@ -1,0 +1,6 @@
+laxmar-web/node_modules/
+laxmar-web/.next/
+laxmar-web/out/
+laxmar-web/build/
+.env*.local
+.vercel
