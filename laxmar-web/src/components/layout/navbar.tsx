@@ -37,7 +37,7 @@ export function Navbar() {
           : "border-transparent bg-background/70 backdrop-blur-sm",
       )}
     >
-      <div className="mx-auto flex h-20 w-full max-w-7xl items-center justify-between px-4 md:px-6">
+      <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-4 md:px-6">
         <Link href="#inicio" className="flex items-center" aria-label="Laxmar - Inicio">
           <Image
             src="/images/logo-laxmar.jpg"
@@ -45,7 +45,7 @@ export function Navbar() {
             width={1024}
             height={473}
             priority
-            className="h-10 w-auto md:h-12"
+            className="h-14 w-auto md:h-20"
           />
         </Link>
 

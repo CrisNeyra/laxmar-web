@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Laxmar | Traslados de pasajeros
 
-## Getting Started
+Página web oficial de **Laxmar**, una empresa argentina de traslados de pasajeros que ofrece servicios turísticos, corporativos y para eventos con cobertura a nivel nacional e internacional (Uruguay).
 
-First, run the development server:
+El sitio web está diseñado con altos estándares de UX/UI, optimizado para ser rápido, accesible y atractivo, con el objetivo de convertir visitantes en clientes a través de una excelente percepción visual de calidad.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Tecnologías utilizadas
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+El proyecto está desarrollado con las últimas tecnologías del ecosistema moderno de desarrollo web:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
+- **Estilos:** [Tailwind CSS v4](https://tailwindcss.com/)
+- **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
+- **Iconografía:** [Lucide React](https://lucide.dev/)
+- **Formularios / Leads:** [Formspree](https://formspree.io/) (Sin backend)
+- **Tipografía:** Geist Sans & Geist Mono (Optimizadas vía `next/font`)
+- **Despliegue:** [Vercel](https://vercel.com/)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Características principales
 
-## Learn More
+- **Diseño sofisticado:** Interfaz moderna con imágenes satelitales, overlays sutiles, transiciones y gradientes para una experiencia inmersiva.
+- **Videos Hero:** Fondo de pantalla principal con videos de la flota en ruta que rotan con *crossfade* continuo.
+- **Responsive:** Adaptable 100% a dispositivos móviles, tablets y escritorio.
+- **Tema Oscuro/Claro:** Soporte nativo y automático para modo claro y oscuro con transiciones fluidas.
+- **Formulario Integrado:** Captura de *leads* de clientes directamente al correo mediante la API de Formspree, sin necesidad de mantener un backend propio.
+- **Botón Flotante de WhatsApp:** Integración con WhatsApp para un contacto ágil y directo.
 
-To learn more about Next.js, take a look at the following resources:
+## 📦 Configuración y desarrollo local
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. **Clonar el repositorio:**
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   git clone <url-del-repositorio>
+   cd laxmar-web
+   ```
 
-## Deploy on Vercel
+2. **Instalar las dependencias:**
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm install
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. **Variables de entorno:**
+
+   Renombra o crea el archivo `.env.local` en la raíz del proyecto y añade el ID de tu formulario de Formspree para habilitar la recepción de correos desde la sección Contacto:
+
+   ```bash
+   NEXT_PUBLIC_FORMSPREE_ID=tu_form_id_aqui
+   ```
+
+4. **Ejecutar el servidor de desarrollo:**
+
+   ```bash
+   npm run dev
+   ```
+
+5. Abrir [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
+
+## 🚢 Despliegue (Deploy)
+
+El proyecto está configurado para un despliegue automático en **Vercel**. Cualquier *commit* que se realice y se suba a la rama `main` en GitHub, disparará automáticamente una nueva construcción y actualización del sitio en producción.
+
+---
+
+*Diseñado y desarrollado para Laxmar - Seguridad y comodidad a cualquier punto del país.*

@@ -85,7 +85,10 @@ export function DestinationsSection() {
         aria-hidden="true"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-white/80 dark:bg-background/85" />
+      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      {/* Gradientes para fundir suavemente los bordes de la imagen */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
       <div className="relative z-10 mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">

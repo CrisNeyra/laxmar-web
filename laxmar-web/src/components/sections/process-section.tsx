@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { CalendarClock, MessageSquare, Route } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
@@ -37,8 +38,23 @@ const steps: Step[] = [
 
 export function ProcessSection() {
   return (
-    <section id="proceso" className="w-full bg-background py-20 md:py-28">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+    <section
+      id="proceso"
+      className="relative w-full overflow-hidden bg-background py-20 md:py-28"
+    >
+      <Image
+        src="/images/coordinar-laxmar.jpg"
+        alt=""
+        fill
+        aria-hidden="true"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      {/* Gradientes para fundir suavemente los bordes de la imagen */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-laxmar-green">
             Cómo trabajamos

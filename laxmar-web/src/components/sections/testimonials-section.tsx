@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 import { Quote, Star } from "lucide-react";
 
 type Testimonial = {
@@ -39,8 +40,20 @@ const metrics = [
 
 export function TestimonialsSection() {
   return (
-    <section className="w-full bg-muted/40 py-20 md:py-28">
-      <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
+    <section className="relative w-full overflow-hidden bg-muted/40 py-20 md:py-28">
+      <Image
+        src="/images/testimonios-laxmar.jpg"
+        alt=""
+        fill
+        aria-hidden="true"
+        className="object-cover"
+      />
+      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      {/* Gradientes para fundir suavemente los bordes de la imagen */}
+      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
+      <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-laxmar-green">
             Testimonios
