@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   title: "Laxmar | Traslados de pasajeros provinciales y nacionales",
   description:
     "Servicio de traslados turísticos, corporativos y para eventos en toda Argentina. Flota habilitada, conductores profesionales, monitoreo satelital y soporte 24/7.",
+  icons: {
+    icon: "/images/logo-laxmar.jpg",
+    apple: "/images/logo-laxmar.jpg",
+  },
   openGraph: {
     title: "Laxmar | Traslados de pasajeros",
     description:
@@ -30,7 +34,7 @@ export const metadata: Metadata = {
     locale: "es_AR",
     images: [
       {
-        url: "/images/laxmar.jpg",
+        url: "/images/flota-laxmar.jpg",
         width: 1200,
         height: 630,
         alt: "Unidad de Laxmar en ruta",
