@@ -11,7 +11,7 @@ export function WhatsAppFab() {
       href={whatsappLink()}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Escribinos por WhatsApp al ${CONTACT.phoneLabel}`}
+      aria-label={`Escribinos por WhatsApp al ${CONTACT.whatsappLabel}`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.6, duration: 0.45, ease: "easeOut" }}

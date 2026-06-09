@@ -288,7 +288,7 @@ export function ContactSection() {
                       rel="noopener noreferrer"
                       className="font-medium text-foreground hover:text-laxmar-green"
                     >
-                      {CONTACT.phoneLabel}
+                      {CONTACT.whatsappLabel}
                     </a>
                   </div>
                 </li>
