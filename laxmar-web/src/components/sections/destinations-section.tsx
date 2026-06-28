@@ -98,7 +98,7 @@ export function DestinationsSection() {
           <h2 className="mt-3 text-3xl font-bold text-foreground md:text-5xl">
             Recorremos Argentina y Uruguay
           </h2>
-          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+          <p className="mt-4 text-base text-black md:text-lg">
             Desde la Costa Atlántica hasta la Patagonia, y cruzando a Uruguay,
             planificamos cada recorrido con paradas estratégicas y conductores
             que conocen la ruta.
@@ -146,7 +146,7 @@ export function DestinationsSection() {
           ))}
         </div>
 
-        <p className="mt-10 text-center text-sm text-muted-foreground">
+        <p className="mt-10 text-center text-sm text-black">
           ¿No ves tu destino?{" "}
           <a
             href="#contacto"

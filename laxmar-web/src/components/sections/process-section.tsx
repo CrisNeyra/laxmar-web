@@ -63,7 +63,7 @@ export function ProcessSection() {
           <h2 className="mt-3 text-3xl font-bold text-foreground md:text-5xl">
             Tres pasos y estás en ruta
           </h2>
-          <p className="mt-4 text-base text-muted-foreground md:text-lg">
+          <p className="mt-4 text-base text-black md:text-lg">
             Un proceso simple y transparente desde el primer mensaje hasta que
             llegás a destino.
           </p>
@@ -91,13 +91,13 @@ export function ProcessSection() {
               <div className="relative z-10 flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 border-laxmar-green bg-background text-laxmar-green shadow-sm">
                 <step.icon className="h-7 w-7" />
               </div>
-              <span className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-muted-foreground">
+              <span className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-black">
                 Paso {step.step}
               </span>
-              <h3 className="mt-2 text-xl font-semibold text-foreground">
+              <h3 className="mt-2 text-xl font-semibold text-black">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-sm text-sm text-muted-foreground md:text-base">
+              <p className="mt-3 max-w-sm text-sm text-black md:text-base">
                 {step.description}
               </p>
             </motion.article>
