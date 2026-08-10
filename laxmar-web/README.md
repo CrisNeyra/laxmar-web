@@ -48,6 +48,8 @@ No hay backend propio: el sitio es estático con integraciones externas para for
 
 ```
 laxmar-web/
+├── .env.example         # Plantilla de variables de entorno
+├── e2e/                 # Tests end-to-end (Playwright)
 ├── public/
 │   ├── images/          # Fotos del sitio (flota, contacto, logo, etc.)
 │   └── videos/          # Videos del hero
@@ -61,10 +63,31 @@ laxmar-web/
 │   │   ├── sections/    # Secciones de la home
 │   │   └── ui/          # Botones, inputs, cards
 │   └── lib/
-│       ├── contact.ts   # Teléfonos, email, redes, link WhatsApp
+│       ├── contact.ts        # Teléfonos, email, redes, link WhatsApp
+│       ├── submit-contact.ts # Lógica del formulario de contacto
 │       └── utils.ts
 ├── .env.local           # Variables locales (no se sube a Git)
 └── package.json
+```
+
+---
+
+## Testing y calidad
+
+```bash
+npm run lint          # ESLint
+npm run typecheck     # Verificación de tipos TypeScript
+npm run test          # Tests unitarios (Vitest)
+npm run test:e2e      # Tests E2E (Playwright)
+npm run format:check  # Verificar formato con Prettier
+```
+
+El pipeline de CI (GitHub Actions) ejecuta lint, typecheck, tests unitarios, build y E2E en cada push y pull request a `main`.
+
+Copiar `.env.example` a `.env.local` antes de desarrollar:
+
+```bash
+cp .env.example .env.local
 ```
 
 ---
@@ -88,10 +111,10 @@ npm install
 
 ### 2. Variables de entorno
 
-Crear el archivo `.env.local` en la raíz de `laxmar-web`:
+Crear el archivo `.env.local` en la raíz del proyecto (ver `.env.example`):
 
 ```env
-NEXT_PUBLIC_FORMSPREE_ID=mvznqggp
+NEXT_PUBLIC_FORMSPREE_ID=tu_id_de_formspree
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
@@ -111,9 +134,12 @@ Abrir [http://localhost:3000](http://localhost:3000) (si el puerto está ocupado
 ### 4. Otros comandos
 
 ```bash
-npm run build   # Build de producción
-npm run start   # Servidor de producción (después del build)
-npm run lint    # Revisión de código con ESLint
+npm run build       # Build de producción
+npm run start       # Servidor de producción (después del build)
+npm run lint        # Revisión de código con ESLint
+npm run typecheck   # Verificación de tipos
+npm run test        # Tests unitarios
+npm run test:e2e    # Tests end-to-end
 ```
 
 ---
@@ -186,6 +212,8 @@ El formulario envía los datos a Formspree, que reenvía el mensaje al correo co
 Campos capturados: nombre, teléfono, email, origen/destino, fecha, pasajeros y mensaje.
 
 Si Formspree no está configurado, el sitio usa un fallback con `mailto:`.
+
+El formulario incluye un campo honeypot (`_gotcha`) para reducir spam automatizado.
 
 ---
 

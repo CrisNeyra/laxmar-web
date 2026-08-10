@@ -45,6 +45,7 @@ export function TestimonialsSection() {
         src="/images/testimonios-laxmar.jpg"
         alt=""
         fill
+        sizes="100vw"
         aria-hidden="true"
         className="object-cover"
       />

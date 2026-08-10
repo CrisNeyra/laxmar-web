@@ -13,13 +13,16 @@ import {
 } from "@/components/ui/social-icons";
 import { Textarea } from "@/components/ui/textarea";
 import { CONTACT, whatsappLink } from "@/lib/contact";
+import {
+  buildMailtoUrl,
+  parseFormData,
+  submitContactForm,
+  type SubmitStatus,
+} from "@/lib/submit-contact";
 
 const inputClass = "h-11";
 
 const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "";
-const FORMSPREE_ENDPOINT = `https://formspree.io/f/${FORMSPREE_ID}`;
-
-type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
 export function ContactSection() {
   const [status, setStatus] = useState<SubmitStatus>("idle");
@@ -29,43 +32,21 @@ export function ContactSection() {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
-    data.append("_subject", "Cotización de viaje - Laxmar");
 
     setStatus("submitting");
 
     if (!FORMSPREE_ID) {
-      const lines = [
-        `Nombre: ${data.get("nombre") ?? ""}`,
-        `Teléfono: ${data.get("telefono") ?? ""}`,
-        `Email: ${data.get("email") ?? ""}`,
-        `Origen → Destino: ${data.get("origenDestino") ?? ""}`,
-        `Fecha: ${data.get("fecha") ?? ""}`,
-        `Pasajeros: ${data.get("pasajeros") ?? ""}`,
-        "",
-        "Mensaje:",
-        `${data.get("mensaje") ?? ""}`,
-      ].join("\n");
-      const subject = encodeURIComponent("Cotización de viaje - Laxmar");
-      const body = encodeURIComponent(lines);
-      window.location.href = `mailto:${CONTACT.email}?subject=${subject}&body=${body}`;
+      window.location.href = buildMailtoUrl(parseFormData(data));
       setStatus("idle");
       return;
     }
 
-    try {
-      const response = await fetch(FORMSPREE_ENDPOINT, {
-        method: "POST",
-        headers: { Accept: "application/json" },
-        body: data,
-      });
+    const result = await submitContactForm(data, FORMSPREE_ID);
 
-      if (response.ok) {
-        form.reset();
-        setStatus("success");
-      } else {
-        setStatus("error");
-      }
-    } catch {
+    if (result === "success" || result === "spam") {
+      form.reset();
+      setStatus("success");
+    } else {
       setStatus("error");
     }
   };
@@ -79,11 +60,11 @@ export function ContactSection() {
         src="/images/contacto-laxmar.jpg"
         alt=""
         fill
+        sizes="100vw"
         aria-hidden="true"
         className="object-cover"
       />
       <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
-      {/* Gradientes para fundir suavemente los bordes de la imagen */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -105,6 +86,17 @@ export function ContactSection() {
             onSubmit={onSubmit}
             className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8 lg:col-span-3"
           >
+            <div className="absolute -left-[9999px]" aria-hidden="true">
+              <label htmlFor="_gotcha">No completar este campo</label>
+              <input
+                id="_gotcha"
+                name="_gotcha"
+                type="text"
+                tabIndex={-1}
+                autoComplete="off"
+              />
+            </div>
+
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
                 <label htmlFor="nombre" className="text-sm font-medium text-foreground">
@@ -206,13 +198,21 @@ export function ContactSection() {
             </Button>
 
             {status === "success" && (
-              <p className="mt-3 rounded-md bg-laxmar-green/10 px-4 py-3 text-center text-sm font-medium text-laxmar-green">
+              <p
+                role="alert"
+                aria-live="polite"
+                className="mt-3 rounded-md bg-laxmar-green/10 px-4 py-3 text-center text-sm font-medium text-laxmar-green"
+              >
                 ¡Gracias! Recibimos tu consulta y te vamos a contactar a la
                 brevedad.
               </p>
             )}
             {status === "error" && (
-              <p className="mt-3 rounded-md bg-destructive/10 px-4 py-3 text-center text-sm font-medium text-red-600">
+              <p
+                role="alert"
+                aria-live="assertive"
+                className="mt-3 rounded-md bg-destructive/10 px-4 py-3 text-center text-sm font-medium text-red-600"
+              >
                 Hubo un problema al enviar. Probá de nuevo o escribinos por
                 WhatsApp.
               </p>

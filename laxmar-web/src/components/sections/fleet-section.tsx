@@ -90,6 +90,7 @@ export function FleetSection() {
         src="/images/flota-laxmar.jpg"
         alt=""
         fill
+        sizes="100vw"
         aria-hidden="true"
         className="object-cover"
       />
@@ -106,7 +107,7 @@ export function FleetSection() {
           <h2 className="mt-3 text-3xl font-bold text-foreground md:text-5xl">
             Unidades equipadas para cada viaje
           </h2>
-          <p className="mt-4 text-base text-black md:text-lg">
+          <p className="mt-4 text-base text-foreground md:text-lg">
             De 12 a 45 pasajeros. Mantenimiento riguroso y conductores
             habilitados para que vos sólo te preocupes por disfrutar el destino.
           </p>
@@ -152,7 +153,7 @@ export function FleetSection() {
           ))}
         </div>
 
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-black">
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-sm text-foreground">
           {amenityIcons.map((amenity) => (
             <div key={amenity.label} className="flex items-center gap-2">
               <amenity.icon className="h-4 w-4 text-laxmar-green" />

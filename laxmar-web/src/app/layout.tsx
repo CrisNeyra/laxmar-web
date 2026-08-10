@@ -4,6 +4,7 @@ import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/layout/footer";
 import { ThemeProvider } from "@/components/layout/theme-provider";
 import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
+import { CONTACT } from "@/lib/contact";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -16,10 +17,11 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://laxmar-web.vercel.app";
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://laxmar-web.vercel.app",
-  ),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "Laxmar | Traslados de pasajeros provinciales y nacionales",
     template: "%s | Laxmar",
@@ -43,10 +45,11 @@ export const metadata: Metadata = {
   publisher: "Laxmar",
   category: "Transporte",
   applicationName: "Laxmar",
+  alternates: {
+    canonical: siteUrl,
+  },
   icons: {
-    icon: [
-      { url: "/images/logo-laxmar.jpg", type: "image/jpeg" },
-    ],
+    icon: [{ url: "/images/logo-laxmar.jpg", type: "image/jpeg" }],
     shortcut: "/images/logo-laxmar.jpg",
     apple: "/images/logo-laxmar.jpg",
   },
@@ -54,7 +57,7 @@ export const metadata: Metadata = {
     title: "Laxmar | Traslados de pasajeros provinciales y nacionales",
     description:
       "Traslados turísticos, corporativos y para eventos con cobertura provincial y nacional. Conductores profesionales, flota habilitada y soporte 24/7.",
-    url: "https://laxmar-web.vercel.app",
+    url: siteUrl,
     siteName: "Laxmar",
     type: "website",
     locale: "es_AR",
@@ -86,6 +89,24 @@ export const metadata: Metadata = {
   },
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  name: "Laxmar",
+  description:
+    "Empresa de traslados de pasajeros provinciales y nacionales en Argentina.",
+  url: siteUrl,
+  email: CONTACT.email,
+  telephone: CONTACT.phoneHref,
+  address: {
+    "@type": "PostalAddress",
+    addressLocality: "Buenos Aires",
+    addressCountry: "AR",
+  },
+  areaServed: "Argentina",
+  sameAs: [CONTACT.instagramUrl, CONTACT.facebookUrl],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -99,6 +120,16 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded-md focus:bg-laxmar-green focus:px-4 focus:py-2 focus:text-white"
+        >
+          Saltar al contenido
+        </a>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
         <ThemeProvider>
           {children}
           <Footer />

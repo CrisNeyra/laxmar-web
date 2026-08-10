@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -16,20 +16,35 @@ const CROSSFADE_LEAD_S = 1.5;
 
 export function HeroSection() {
   const [current, setCurrent] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const prefersReducedMotion = useReducedMotion();
+  const reduceMotion = mounted && Boolean(prefersReducedMotion);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     videoRefs.current.forEach((video, idx) => {
       if (!video) return;
+
+      if (reduceMotion) {
+        video.pause();
+        return;
+      }
+
       if (idx === current) {
         video.currentTime = 0;
         video.play().catch(() => {});
+      } else {
+        video.pause();
       }
     });
-  }, [current]);
+  }, [current, reduceMotion]);
 
   const handleTimeUpdate = (index: number) => {
-    if (index !== current) return;
+    if (reduceMotion || index !== current) return;
     const video = videoRefs.current[index];
     if (!video || Number.isNaN(video.duration)) return;
     if (video.currentTime >= video.duration - CROSSFADE_LEAD_S) {
@@ -44,6 +59,13 @@ export function HeroSection() {
       id="inicio"
       className="relative h-[88vh] min-h-[600px] w-full overflow-hidden"
     >
+      {/* Poster de respaldo mientras cargan los videos */}
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: "url('/images/flota-laxmar.jpg')" }}
+        aria-hidden="true"
+      />
+
       {heroVideos.map((video, index) => (
         <video
           key={video.src}
@@ -51,11 +73,12 @@ export function HeroSection() {
             videoRefs.current[index] = el;
           }}
           src={video.src}
-          poster="/images/laxmar.jpg"
+          poster="/images/flota-laxmar.jpg"
           autoPlay={index === 0}
           muted
           playsInline
-          preload="auto"
+          loop={heroVideos.length === 1}
+          preload={index === 0 ? "auto" : "metadata"}
           aria-label={video.label}
           onTimeUpdate={() => handleTimeUpdate(index)}
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${
@@ -68,7 +91,7 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 md:px-6">
         <motion.div
-          initial={{ opacity: 0, y: 32 }}
+          initial={reduceMotion ? false : { opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: "easeOut" }}
           className="max-w-3xl text-white"
@@ -107,22 +130,24 @@ export function HeroSection() {
         </motion.div>
       </div>
 
-      <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
-        {heroVideos.map((video, index) => (
-          <button
-            key={video.src}
-            type="button"
-            onClick={() => setCurrent(index)}
-            aria-label={`Ver ${video.label}`}
-            aria-pressed={current === index}
-            className={`h-1.5 rounded-full transition-all ${
-              current === index
-                ? "w-10 bg-white"
-                : "w-5 bg-white/40 hover:bg-white/70"
-            }`}
-          />
-        ))}
-      </div>
+      {!reduceMotion && (
+        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
+          {heroVideos.map((video, index) => (
+            <button
+              key={video.src}
+              type="button"
+              onClick={() => setCurrent(index)}
+              aria-label={`Ver ${video.label}`}
+              aria-pressed={current === index}
+              className={`h-1.5 rounded-full transition-all ${
+                current === index
+                  ? "w-10 bg-white"
+                  : "w-5 bg-white/40 hover:bg-white/70"
+              }`}
+            />
+          ))}
+        </div>
+      )}
     </section>
   );
 }

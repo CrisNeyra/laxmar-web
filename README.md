@@ -1,35 +1,40 @@
-# Portfolio Cristian Neyra
+# Laxmar Web
 
-Portfolio personal de Cristian Neyra. Sitio estático diseñado para presentar perfil profesional, proyectos, formación y vías de contacto.
+Sitio web oficial de **Laxmar**, empresa argentina de traslados de pasajeros con cobertura provincial y nacional.
 
-## Demo
-- Sitio: (agregar URL final de Vercel)
+**Sitio en producción:** [laxmar-web.vercel.app](https://laxmar-web.vercel.app)
 
-## Tecnologías
-- HTML5
-- CSS3
-- JavaScript
+**Repositorio:** [github.com/CrisNeyra/laxmar-web](https://github.com/CrisNeyra/laxmar-web)
 
-## Características
-- Diseño responsive y secciones full-page.
-- Selector de idioma ES/EN con traducciones integradas.
-- Secciones de proyectos, formación y contacto.
-- Formulario de contacto con EmailJS.
+---
 
-## Estructura del proyecto
-- `index.html`: estructura principal del sitio.
-- `style.css`: estilos y diseño visual.
-- `script.js`: interacciones, traducciones y formulario.
-- `assets/` e `image/`: recursos visuales.
+## Inicio rápido
 
-## Uso local
-1. Cloná el repositorio.
-2. Abrí `index.html` en el navegador.
+La aplicación Next.js vive en la carpeta [`laxmar-web/`](laxmar-web/):
 
-## Publicación
-Compatible con GitHub Pages y Vercel. Subí el repositorio y apuntá la publicación a la raíz del proyecto.
+```bash
+cd laxmar-web
+cp .env.example .env.local
+npm install
+npm run dev
+```
 
-## Contacto
-- LinkedIn: https://www.linkedin.com/in/crissneyra/
-- GitHub: https://github.com/CrisNeyra
-- Email: crisneyra13@gmail.com
+Documentación completa, stack, testing y despliegue: **[laxmar-web/README.md](laxmar-web/README.md)**
+
+---
+
+## Comandos principales
+
+```bash
+cd laxmar-web
+npm run dev          # Desarrollo local
+npm run lint         # ESLint
+npm run typecheck    # TypeScript
+npm run test         # Tests unitarios (Vitest)
+npm run test:e2e     # Tests E2E (Playwright)
+npm run build        # Build de producción
+```
+
+---
+
+*Desarrollado para Laxmar — Traslados de pasajeros provinciales y nacionales.*

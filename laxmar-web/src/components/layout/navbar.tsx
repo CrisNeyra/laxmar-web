@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -20,6 +20,8 @@ const navItems = [
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -27,6 +29,20 @@ export function Navbar() {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        menuButtonRef.current?.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [open]);
 
   return (
     <header
@@ -49,7 +65,7 @@ export function Navbar() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Principal">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -64,12 +80,14 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <ThemeToggle />
           <Button
+            ref={menuButtonRef}
             variant="outline"
             size="icon"
             className="md:hidden"
             onClick={() => setOpen((prev) => !prev)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
+            aria-controls="mobile-nav"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </Button>
@@ -77,12 +95,14 @@ export function Navbar() {
       </div>
 
       <div
+        id="mobile-nav"
+        ref={menuRef}
         className={cn(
           "overflow-hidden border-t border-border transition-all md:hidden",
           open ? "max-h-80" : "max-h-0 border-transparent",
         )}
       >
-        <nav className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-3">
+        <nav className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-3" aria-label="Móvil">
           {navItems.map((item) => (
             <Link
               key={item.href}

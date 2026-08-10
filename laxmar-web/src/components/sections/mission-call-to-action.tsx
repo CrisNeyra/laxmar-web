@@ -1,13 +1,19 @@
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 
 export function MissionCallToAction() {
   return (
     <section id="mision" className="w-full py-20 md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
-        <div
-          className="relative overflow-hidden rounded-3xl bg-cover bg-center"
-          style={{ backgroundImage: "url('/images/laxmar.jpg')" }}
-        >
+        <div className="relative min-h-[420px] overflow-hidden rounded-3xl">
+          <Image
+            src="/images/laxmar.jpg"
+            alt=""
+            fill
+            sizes="(max-width: 768px) 100vw, 1280px"
+            aria-hidden="true"
+            className="object-cover"
+          />
           <div className="absolute inset-0 bg-gradient-to-tr from-laxmar-blue/95 via-laxmar-blue/70 to-laxmar-blue/30" />
 
           <div className="relative z-10 flex min-h-[420px] items-end p-6 md:p-12">

@@ -82,6 +82,7 @@ export function DestinationsSection() {
         src="/images/argentina-satelital.jpg"
         alt=""
         fill
+        sizes="100vw"
         aria-hidden="true"
         className="object-cover"
       />
