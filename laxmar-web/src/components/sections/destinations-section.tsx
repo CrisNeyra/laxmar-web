@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 
@@ -83,11 +80,11 @@ export function DestinationsSection() {
         alt=""
         fill
         sizes="100vw"
+        quality={70}
         aria-hidden="true"
         className="object-cover"
       />
       <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
-      {/* Gradientes para fundir suavemente los bordes de la imagen */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -99,7 +96,7 @@ export function DestinationsSection() {
           <h2 className="mt-3 text-3xl font-bold text-foreground md:text-5xl">
             Recorremos Argentina y Uruguay
           </h2>
-          <p className="mt-4 text-base text-black md:text-lg">
+          <p className="mt-4 text-base text-foreground md:text-lg">
             Desde la Costa Atlántica hasta la Patagonia, y cruzando a Uruguay,
             planificamos cada recorrido con paradas estratégicas y conductores
             que conocen la ruta.
@@ -107,17 +104,9 @@ export function DestinationsSection() {
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {regions.map((region, regionIdx) => (
-            <motion.article
+          {regions.map((region) => (
+            <article
               key={region.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.5,
-                delay: regionIdx * 0.06,
-                ease: "easeOut",
-              }}
               className="group rounded-2xl border border-border bg-card p-6 transition-all hover:-translate-y-1 hover:border-laxmar-green/50 hover:shadow-lg"
             >
               <div className="mb-5 flex items-center gap-3">
@@ -143,11 +132,11 @@ export function DestinationsSection() {
                   </li>
                 ))}
               </ul>
-            </motion.article>
+            </article>
           ))}
         </div>
 
-        <p className="mt-10 text-center text-sm text-black">
+        <p className="mt-10 text-center text-sm text-foreground">
           ¿No ves tu destino?{" "}
           <a
             href="#contacto"

@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 
 import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { WhatsAppIcon } from "@/components/ui/social-icons";
+import { whatsappLink } from "@/lib/contact";
 import { cn } from "@/lib/utils";
 
 const navItems = [
@@ -14,6 +16,7 @@ const navItems = [
   { href: "#destinos", label: "Destinos" },
   { href: "#flota", label: "Flota" },
   { href: "#proceso", label: "Cómo trabajamos" },
+  { href: "#faq", label: "FAQ" },
   { href: "#contacto", label: "Contacto" },
 ];
 
@@ -53,8 +56,8 @@ export function Navbar() {
           : "border-transparent bg-background/70 backdrop-blur-sm",
       )}
     >
-      <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between px-4 md:px-6">
-        <Link href="#inicio" className="flex items-center" aria-label="Laxmar - Inicio">
+      <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between gap-3 px-4 md:px-6">
+        <Link href="#inicio" className="flex shrink-0 items-center" aria-label="Laxmar - Inicio">
           <Image
             src="/images/logo-laxmar.jpg"
             alt="Laxmar"
@@ -65,12 +68,12 @@ export function Navbar() {
           />
         </Link>
 
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Principal">
+        <nav className="hidden items-center gap-6 lg:flex" aria-label="Principal">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
-              className="text-base font-medium text-foreground/80 transition-colors hover:text-foreground"
+              className="text-sm font-medium text-foreground/80 transition-colors hover:text-foreground xl:text-base"
             >
               {item.label}
             </Link>
@@ -78,12 +81,24 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Escribinos por WhatsApp"
+            className="hidden h-10 w-10 items-center justify-center rounded-md border border-border text-[#25D366] transition-colors hover:bg-muted sm:inline-flex"
+          >
+            <WhatsAppIcon className="h-5 w-5" />
+          </a>
+          <Button asChild className="hidden bg-laxmar-green text-white hover:opacity-90 sm:inline-flex">
+            <Link href="#contacto">Cotizar</Link>
+          </Button>
           <ThemeToggle />
           <Button
             ref={menuButtonRef}
             variant="outline"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             onClick={() => setOpen((prev) => !prev)}
             aria-label={open ? "Cerrar menú" : "Abrir menú"}
             aria-expanded={open}
@@ -98,8 +113,8 @@ export function Navbar() {
         id="mobile-nav"
         ref={menuRef}
         className={cn(
-          "overflow-hidden border-t border-border transition-all md:hidden",
-          open ? "max-h-80" : "max-h-0 border-transparent",
+          "overflow-hidden border-t border-border transition-all lg:hidden",
+          open ? "max-h-96" : "max-h-0 border-transparent",
         )}
       >
         <nav className="mx-auto flex w-full max-w-7xl flex-col gap-1 px-4 py-3" aria-label="Móvil">
@@ -113,6 +128,22 @@ export function Navbar() {
               {item.label}
             </Link>
           ))}
+          <Link
+            href="#contacto"
+            onClick={() => setOpen(false)}
+            className="mt-2 rounded-md bg-laxmar-green px-3 py-2.5 text-center text-sm font-semibold text-white"
+          >
+            Cotizar viaje
+          </Link>
+          <a
+            href={whatsappLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={() => setOpen(false)}
+            className="rounded-md border border-border px-3 py-2.5 text-center text-sm font-medium text-foreground"
+          >
+            WhatsApp
+          </a>
         </nav>
       </div>
     </header>

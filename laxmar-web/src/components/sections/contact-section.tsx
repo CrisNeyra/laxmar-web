@@ -61,6 +61,7 @@ export function ContactSection() {
         alt=""
         fill
         sizes="100vw"
+        quality={70}
         aria-hidden="true"
         className="object-cover"
       />
@@ -77,7 +78,7 @@ export function ContactSection() {
             Pedinos tu cotización
           </h2>
           <p className="mt-4 text-base text-muted-foreground md:text-lg">
-            Respondemos rápido. Contanos tu viaje y te armamos la mejor opción.
+            Respondemos en el día. Contanos tu viaje y te armamos la mejor opción.
           </p>
         </div>
 

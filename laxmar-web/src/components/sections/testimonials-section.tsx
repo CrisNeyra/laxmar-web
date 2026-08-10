@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { Quote, Star } from "lucide-react";
 
@@ -46,11 +43,11 @@ export function TestimonialsSection() {
         alt=""
         fill
         sizes="100vw"
+        quality={70}
         aria-hidden="true"
         className="object-cover"
       />
       <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
-      {/* Gradientes para fundir suavemente los bordes de la imagen */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -65,13 +62,9 @@ export function TestimonialsSection() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {testimonials.map((testimonial, idx) => (
-            <motion.article
+          {testimonials.map((testimonial) => (
+            <article
               key={testimonial.author}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
               className="relative flex h-full flex-col rounded-2xl border border-border bg-card p-6 shadow-sm"
             >
               <Quote className="absolute right-5 top-5 h-8 w-8 text-laxmar-green/15" />
@@ -91,7 +84,7 @@ export function TestimonialsSection() {
                   {testimonial.role}
                 </p>
               </footer>
-            </motion.article>
+            </article>
           ))}
         </div>
 

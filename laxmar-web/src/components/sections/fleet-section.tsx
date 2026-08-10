@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   BadgeCheck,
@@ -91,11 +88,11 @@ export function FleetSection() {
         alt=""
         fill
         sizes="100vw"
+        quality={70}
         aria-hidden="true"
         className="object-cover"
       />
       <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
-      {/* Gradientes para fundir suavemente los bordes de la imagen */}
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -114,13 +111,9 @@ export function FleetSection() {
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {fleet.map((unit, idx) => (
-            <motion.article
+          {fleet.map((unit) => (
+            <article
               key={unit.name}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 0.5, delay: idx * 0.08, ease: "easeOut" }}
               className={`relative flex flex-col gap-4 rounded-2xl border bg-card p-6 transition-all hover:-translate-y-1 hover:shadow-lg ${
                 unit.highlight
                   ? "border-laxmar-green/60 shadow-md"
@@ -149,7 +142,7 @@ export function FleetSection() {
                   </li>
                 ))}
               </ul>
-            </motion.article>
+            </article>
           ))}
         </div>
 

@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Image from "next/image";
 import { CalendarClock, MessageSquare, Route } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
@@ -48,10 +45,10 @@ export function ProcessSection() {
         fill
         aria-hidden="true"
         sizes="100vw"
+        quality={70}
         className="object-cover object-center"
       />
       <div className="absolute inset-0 bg-white/30 dark:bg-background/35" />
-      {/* Degradés suaves y más cortos para no tapar la foto */}
       <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background/90 to-transparent md:h-14" />
       <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background/90 to-transparent md:h-14" />
 
@@ -63,7 +60,7 @@ export function ProcessSection() {
           <h2 className="mt-3 text-3xl font-bold text-foreground md:text-5xl">
             Tres pasos y estás en ruta
           </h2>
-          <p className="mt-4 text-base text-black md:text-lg">
+          <p className="mt-4 text-base text-foreground md:text-lg">
             Un proceso simple y transparente desde el primer mensaje hasta que
             llegás a destino.
           </p>
@@ -75,32 +72,24 @@ export function ProcessSection() {
             className="absolute left-0 right-0 top-9 hidden h-px bg-gradient-to-r from-transparent via-laxmar-green/40 to-transparent md:block"
           />
 
-          {steps.map((step, idx) => (
-            <motion.article
+          {steps.map((step) => (
+            <article
               key={step.step}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{
-                duration: 0.5,
-                delay: idx * 0.12,
-                ease: "easeOut",
-              }}
               className="relative flex flex-col items-center text-center"
             >
               <div className="relative z-10 flex h-[72px] w-[72px] items-center justify-center rounded-full border-2 border-laxmar-green bg-background text-laxmar-green shadow-sm">
                 <step.icon className="h-7 w-7" />
               </div>
-              <span className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-black">
+              <span className="mt-4 text-xs font-semibold uppercase tracking-[0.22em] text-foreground">
                 Paso {step.step}
               </span>
-              <h3 className="mt-2 text-xl font-semibold text-black">
+              <h3 className="mt-2 text-xl font-semibold text-foreground">
                 {step.title}
               </h3>
-              <p className="mt-3 max-w-sm text-sm text-black md:text-base">
+              <p className="mt-3 max-w-sm text-sm text-foreground md:text-base">
                 {step.description}
               </p>
-            </motion.article>
+            </article>
           ))}
         </div>
       </div>

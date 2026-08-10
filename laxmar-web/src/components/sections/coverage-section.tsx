@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "framer-motion";
 import {
   Briefcase,
   GraduationCap,
@@ -50,12 +47,7 @@ export function CoverageSection() {
     <section className="w-full bg-laxmar-blue py-20 text-white md:py-24">
       <div className="mx-auto w-full max-w-7xl px-4 md:px-6">
         <div className="grid items-center gap-10 lg:grid-cols-2">
-          <motion.div
-            initial={{ opacity: 0, x: -24 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-          >
+          <div>
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-laxmar-green">
               Cobertura
             </p>
@@ -70,20 +62,12 @@ export function CoverageSection() {
               <Navigation className="h-4 w-4 text-laxmar-green" />
               Salidas desde todo el país
             </div>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {services.map((service, idx) => (
-              <motion.article
+            {services.map((service) => (
+              <article
                 key={service.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{
-                  duration: 0.45,
-                  delay: idx * 0.06,
-                  ease: "easeOut",
-                }}
                 className="rounded-xl border border-white/15 bg-white/5 p-4 backdrop-blur transition-colors hover:bg-white/10"
               >
                 <service.icon className="mb-3 h-7 w-7 text-laxmar-green" />
@@ -93,7 +77,7 @@ export function CoverageSection() {
                 <p className="mt-1 text-xs text-white/70">
                   {service.description}
                 </p>
-              </motion.article>
+              </article>
             ))}
           </div>
         </div>
