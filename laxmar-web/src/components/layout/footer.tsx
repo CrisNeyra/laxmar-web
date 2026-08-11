@@ -115,7 +115,12 @@ export function Footer() {
       <div className="border-t border-white/10">
         <div className="mx-auto flex w-full max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/60 md:flex-row md:px-6">
           <p>© {new Date().getFullYear()} Laxmar. Todos los derechos reservados.</p>
-          <p>Hecho con cuidado en Argentina.</p>
+          <div className="flex items-center gap-4">
+            <Link href="/privacidad" className="hover:text-white">
+              Privacidad
+            </Link>
+            <p>Hecho con cuidado en Argentina.</p>
+          </div>
         </div>
       </div>
     </footer>

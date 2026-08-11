@@ -1,8 +1,9 @@
 "use client";
 
-import { Mail, MapPin, Phone, Send } from "lucide-react";
 import Image from "next/image";
-import { useState, type FormEvent } from "react";
+import Link from "next/link";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
+import { useMemo, useState, type FormEvent } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,6 +18,9 @@ import {
   buildMailtoUrl,
   parseFormData,
   submitContactForm,
+  todayISODate,
+  validateContactForm,
+  type FieldErrors,
   type SubmitStatus,
 } from "@/lib/submit-contact";
 
@@ -26,29 +30,54 @@ const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "";
 
 export function ContactSection() {
   const [status, setStatus] = useState<SubmitStatus>("idle");
+  const [errors, setErrors] = useState<FieldErrors>({});
   const submitting = status === "submitting";
+  const minDate = useMemo(() => todayISODate(), []);
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
+    const parsed = parseFormData(data);
+    const nextErrors = validateContactForm(parsed);
 
+    if (Object.keys(nextErrors).length > 0) {
+      setErrors(nextErrors);
+      setStatus("idle");
+      return;
+    }
+
+    setErrors({});
     setStatus("submitting");
 
     if (!FORMSPREE_ID) {
-      window.location.href = buildMailtoUrl(parseFormData(data));
+      window.location.href = buildMailtoUrl(parsed);
       setStatus("idle");
       return;
     }
 
     const result = await submitContactForm(data, FORMSPREE_ID);
 
-    if (result === "success" || result === "spam") {
+    if (result === "success") {
       form.reset();
       setStatus("success");
-    } else {
-      setStatus("error");
+      return;
     }
+
+    if (result === "spam") {
+      // Silencioso: no revelar el honeypot ni fingir recepción real.
+      form.reset();
+      setStatus("idle");
+      return;
+    }
+
+    if (result === "invalid") {
+      setErrors(validateContactForm(parseFormData(data)));
+      setStatus("idle");
+      return;
+    }
+
+    setStatus("error");
   };
 
   return (
@@ -85,9 +114,10 @@ export function ContactSection() {
         <div className="mt-12 grid gap-8 lg:grid-cols-5">
           <form
             onSubmit={onSubmit}
-            className="rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8 lg:col-span-3"
+            noValidate
+            className="relative rounded-2xl border border-border bg-card p-6 shadow-sm md:p-8 lg:col-span-3"
           >
-            <div className="absolute -left-[9999px]" aria-hidden="true">
+            <div className="pointer-events-none absolute -left-[9999px] h-0 w-0 overflow-hidden opacity-0" aria-hidden="true">
               <label htmlFor="_gotcha">No completar este campo</label>
               <input
                 id="_gotcha"
@@ -107,9 +137,12 @@ export function ContactSection() {
                   id="nombre"
                   name="nombre"
                   required
+                  autoComplete="name"
                   placeholder="Juan Pérez"
                   className={inputClass}
+                  aria-invalid={Boolean(errors.nombre)}
                 />
+                {errors.nombre && <FieldError message={errors.nombre} />}
               </div>
               <div className="space-y-1.5">
                 <label htmlFor="telefono" className="text-sm font-medium text-foreground">
@@ -119,10 +152,14 @@ export function ContactSection() {
                   id="telefono"
                   name="telefono"
                   type="tel"
+                  inputMode="tel"
+                  autoComplete="tel"
                   required
                   placeholder="+54 9 11 0000-0000"
                   className={inputClass}
+                  aria-invalid={Boolean(errors.telefono)}
                 />
+                {errors.telefono && <FieldError message={errors.telefono} />}
               </div>
               <div className="space-y-1.5 sm:col-span-2">
                 <label htmlFor="email" className="text-sm font-medium text-foreground">
@@ -132,10 +169,14 @@ export function ContactSection() {
                   id="email"
                   name="email"
                   type="email"
+                  inputMode="email"
+                  autoComplete="email"
                   required
                   placeholder="vos@email.com"
                   className={inputClass}
+                  aria-invalid={Boolean(errors.email)}
                 />
+                {errors.email && <FieldError message={errors.email} />}
               </div>
               <div className="space-y-1.5 sm:col-span-2">
                 <label
@@ -148,9 +189,14 @@ export function ContactSection() {
                   id="origenDestino"
                   name="origenDestino"
                   required
+                  autoComplete="off"
                   placeholder="Ej: Buenos Aires → Mar del Plata"
                   className={inputClass}
+                  aria-invalid={Boolean(errors.origenDestino)}
                 />
+                {errors.origenDestino && (
+                  <FieldError message={errors.origenDestino} />
+                )}
               </div>
               <div className="space-y-1.5">
                 <label htmlFor="fecha" className="text-sm font-medium text-foreground">
@@ -160,8 +206,12 @@ export function ContactSection() {
                   id="fecha"
                   name="fecha"
                   type="date"
+                  required
+                  min={minDate}
                   className={inputClass}
+                  aria-invalid={Boolean(errors.fecha)}
                 />
+                {errors.fecha && <FieldError message={errors.fecha} />}
               </div>
               <div className="space-y-1.5">
                 <label htmlFor="pasajeros" className="text-sm font-medium text-foreground">
@@ -171,10 +221,15 @@ export function ContactSection() {
                   id="pasajeros"
                   name="pasajeros"
                   type="number"
+                  inputMode="numeric"
+                  required
                   min={1}
+                  max={45}
                   placeholder="Ej: 20"
                   className={inputClass}
+                  aria-invalid={Boolean(errors.pasajeros)}
                 />
+                {errors.pasajeros && <FieldError message={errors.pasajeros} />}
               </div>
               <div className="space-y-1.5 sm:col-span-2">
                 <label htmlFor="mensaje" className="text-sm font-medium text-foreground">
@@ -186,6 +241,32 @@ export function ContactSection() {
                   placeholder="Contanos más sobre tu viaje, paradas, horarios…"
                   className="min-h-32"
                 />
+              </div>
+              <div className="space-y-1.5 sm:col-span-2">
+                <label className="flex items-start gap-3 text-sm text-foreground">
+                  <input
+                    type="checkbox"
+                    name="consentimiento"
+                    value="on"
+                    required
+                    className="mt-1 h-4 w-4 rounded border-border accent-[hsl(var(--laxmar-green))]"
+                    aria-invalid={Boolean(errors.consentimiento)}
+                  />
+                  <span>
+                    Acepto que Laxmar me contacte por teléfono, WhatsApp o
+                    email para responder esta cotización.{" "}
+                    <Link
+                      href="/privacidad"
+                      className="font-semibold text-laxmar-green hover:underline"
+                    >
+                      Ver privacidad
+                    </Link>
+                    .
+                  </span>
+                </label>
+                {errors.consentimiento && (
+                  <FieldError message={errors.consentimiento} />
+                )}
               </div>
             </div>
 
@@ -216,6 +297,12 @@ export function ContactSection() {
               >
                 Hubo un problema al enviar. Probá de nuevo o escribinos por
                 WhatsApp.
+              </p>
+            )}
+
+            {!FORMSPREE_ID && (
+              <p className="mt-3 text-center text-xs text-amber-700 dark:text-amber-400">
+                Formspree no está configurado: al enviar se abrirá tu correo.
               </p>
             )}
 
@@ -336,5 +423,13 @@ export function ContactSection() {
         </div>
       </div>
     </section>
+  );
+}
+
+function FieldError({ message }: { message: string }) {
+  return (
+    <p role="alert" className="text-xs font-medium text-red-600">
+      {message}
+    </p>
   );
 }
