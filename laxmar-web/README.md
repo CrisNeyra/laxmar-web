@@ -194,6 +194,9 @@ En el panel de Vercel → **Settings → Environment Variables**, configurar:
 
 - `NEXT_PUBLIC_FORMSPREE_ID`
 - `NEXT_PUBLIC_SITE_URL` → `https://laxmar-web.vercel.app`
+- `WHATSAPP_TOKEN` (Meta Cloud API)
+- `WHATSAPP_PHONE_NUMBER_ID`
+- `WHATSAPP_VERIFY_TOKEN`
 
 ### Analytics
 
@@ -209,11 +212,54 @@ El código de Vercel Analytics ya está integrado. Para ver métricas:
 
 El formulario envía los datos a Formspree, que reenvía el mensaje al correo configurado en la cuenta.
 
-Campos capturados: nombre, teléfono, email, origen/destino, fecha, pasajeros y mensaje.
+Campos capturados: nombre, teléfono, email, origen/destino, fecha, pasajeros, mensaje y consentimiento.
 
 Si Formspree no está configurado, el sitio usa un fallback con `mailto:`.
 
 El formulario incluye un campo honeypot (`_gotcha`) para reducir spam automatizado.
+
+---
+
+## Bot de WhatsApp (cotización + estimación)
+
+Endpoint: `POST/GET /api/whatsapp/webhook`
+
+El bot pide:
+1. Nombre
+2. Pasajeros (1-45)
+3. Fecha de viaje
+4. Origen y destino
+
+Luego calcula una **estimación orientativa** con `src/lib/pricing.ts` (tarifas editables) y, si Formspree está configurado, avisa el lead por email.
+
+### Setup Meta WhatsApp Cloud API
+
+1. Creá una app en [Meta for Developers](https://developers.facebook.com/)
+2. Agregá el producto **WhatsApp**
+3. En **API Setup** copiá:
+   - Temporary/permanent access token → `WHATSAPP_TOKEN`
+   - Phone number ID → `WHATSAPP_PHONE_NUMBER_ID`
+4. Definí un verify token propio → `WHATSAPP_VERIFY_TOKEN`
+5. En Vercel, cargá esas 3 variables + redeploy
+6. En Meta → WhatsApp → Configuration → Webhook:
+   - Callback URL: `https://TU-DOMINIO/api/whatsapp/webhook`
+   - Verify token: el mismo de `WHATSAPP_VERIFY_TOKEN`
+   - Suscribite al campo `messages`
+7. Agregá tu número de prueba y mandá `hola`
+
+### Editar precios
+
+Archivo: `src/lib/pricing.ts`
+
+Ahí están:
+- tarifas por unidad (`VEHICLES`)
+- km estimados por zona (`DESTINATIONS`)
+
+La estimación se muestra como rango (±8%) y aclara que no es cotización final.
+
+### Limitación actual
+
+El estado de conversación vive en memoria del server. En serverless (Vercel) puede reiniciarse entre instancias. Para producción estable conviene Upstash Redis / Vercel KV.
 
 ---
 

@@ -4,7 +4,8 @@ export const CONTACT = {
   phoneHref: "+541142651842",
   whatsappLabel: "11-6888-3430",
   whatsappNumber: "5491168883430",
-  whatsappMessage: "Hola Laxmar, quiero cotizar un viaje",
+  whatsappMessage:
+    "Hola Laxmar, quiero cotizar un viaje. (También puedo hablar con el asistente: escribí hola)",
   city: "Buenos Aires, Argentina",
   instagramHandle: "@laxmar",
   instagramUrl: "https://instagram.com/laxmar",
