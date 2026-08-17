@@ -232,8 +232,8 @@ export function ContactSection() {
                     className={cn(
                       "rounded-md px-3 py-2 text-sm font-semibold transition",
                       activeTab === "origen"
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground",
+                        ? "bg-background text-foreground shadow-[0_0_0_2px_rgba(44,159,133,0.35),0_0_18px_rgba(44,159,133,0.45)] ring-2 ring-laxmar-green/50"
+                        : "bg-transparent text-muted-foreground hover:text-foreground",
                     )}
                   >
                     Origen
@@ -247,8 +247,9 @@ export function ContactSection() {
                     onClick={() => setActiveTab("destino")}
                     className={cn(
                       "rounded-md px-3 py-2 text-sm font-semibold transition",
-                      "bg-laxmar-blue text-white shadow-sm hover:opacity-95",
-                      activeTab === "destino" && "ring-2 ring-laxmar-green/60 ring-offset-1",
+                      activeTab === "destino"
+                        ? "bg-laxmar-blue text-white shadow-[0_0_0_2px_rgba(21,36,72,0.35),0_0_20px_rgba(44,159,133,0.35),0_0_18px_rgba(21,36,72,0.55)] ring-2 ring-white/40"
+                        : "bg-transparent text-muted-foreground hover:text-foreground",
                     )}
                   >
                     Destino
