@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -64,7 +65,7 @@ export function HeroSection() {
     videoRefs.current.forEach((video, idx) => {
       if (!video) return;
       if (idx === current) {
-        video.play().catch(() => {});
+        void video.play().catch(() => {});
       } else {
         video.pause();
       }
@@ -74,12 +75,17 @@ export function HeroSection() {
   const handleTimeUpdate = (index: number) => {
     if (!videosEnabled || reduceMotion || index !== current) return;
     const video = videoRefs.current[index];
-    if (!video || Number.isNaN(video.duration)) return;
+    if (!video || Number.isNaN(video.duration) || !video.duration) return;
     if (video.currentTime >= video.duration - CROSSFADE_LEAD_S) {
       setCurrent((prev) =>
         prev === index ? (prev + 1) % heroVideos.length : prev,
       );
     }
+  };
+
+  const handleEnded = (index: number) => {
+    if (!videosEnabled || reduceMotion || index !== current) return;
+    setCurrent((prev) => (prev + 1) % heroVideos.length);
   };
 
   return (
@@ -109,6 +115,7 @@ export function HeroSection() {
             preload={index === current ? "metadata" : "none"}
             aria-label={video.label}
             onTimeUpdate={() => handleTimeUpdate(index)}
+            onEnded={() => handleEnded(index)}
             className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-[1500ms] ease-in-out ${
               index === current ? "opacity-100" : "opacity-0"
             }`}
@@ -119,14 +126,19 @@ export function HeroSection() {
 
       <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-4 md:px-6">
         <div className="max-w-3xl text-white">
-          <p className="text-5xl font-black tracking-tight text-white md:text-7xl lg:text-8xl">
-            LAX<span className="text-laxmar-green">MAR</span>
-          </p>
-          <h1 className="mt-4 text-2xl font-semibold leading-tight text-white/95 md:mt-5 md:text-4xl lg:text-5xl">
+          <Image
+            src="/images/logo-laxmar.png"
+            alt="Laxmar"
+            width={892}
+            height={187}
+            priority
+            className="h-16 w-auto drop-shadow-lg md:h-24 lg:h-28"
+          />
+          <h1 className="mt-5 text-2xl font-semibold leading-tight text-white/95 md:mt-6 md:text-4xl lg:text-5xl">
             Traslados seguros a cualquier punto del país
           </h1>
           <p className="mt-5 max-w-xl text-base text-white/85 md:text-lg">
-            Flota habilitada de 12 a 45 pasajeros para turismo, empresas y
+            Flota habilitada de hasta 20 personas para turismo, empresas y
             eventos. Respondemos rápido por WhatsApp.
           </p>
 
@@ -150,25 +162,6 @@ export function HeroSection() {
           </div>
         </div>
       </div>
-
-      {videosEnabled && !reduceMotion && (
-        <div className="absolute bottom-6 left-1/2 z-10 flex -translate-x-1/2 items-center gap-3">
-          {heroVideos.map((video, index) => (
-            <button
-              key={video.src}
-              type="button"
-              onClick={() => setCurrent(index)}
-              aria-label={`Ver ${video.label}`}
-              aria-pressed={current === index}
-              className={`h-1.5 rounded-full transition-all ${
-                current === index
-                  ? "w-10 bg-white"
-                  : "w-5 bg-white/40 hover:bg-white/70"
-              }`}
-            />
-          ))}
-        </div>
-      )}
     </section>
   );
 }

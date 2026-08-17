@@ -24,7 +24,7 @@ const faqs = [
   {
     question: "¿Qué capacidad tienen las unidades?",
     answer:
-      "Trabajamos con flota de 12 a 45 pasajeros: Hiace, Sprinter, mini-bus y bus de larga distancia. Te sugerimos la unidad según cantidad de pasajeros, equipaje y tipo de viaje.",
+      "Trabajamos con flota de hasta 20 pasajeros: Toyota Hiace y Mercedes-Benz Sprinter. Te sugerimos la unidad según cantidad de pasajeros, equipaje y tipo de viaje.",
   },
   {
     question: "¿Cómo se confirma y se paga?",

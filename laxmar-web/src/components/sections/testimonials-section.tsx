@@ -47,7 +47,7 @@ export function TestimonialsSection() {
         aria-hidden="true"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      <div className="absolute inset-0 bg-white/50" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 

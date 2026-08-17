@@ -5,7 +5,6 @@ import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
-import { ThemeToggle } from "@/components/layout/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { WhatsAppIcon } from "@/components/ui/social-icons";
 import { whatsappLink } from "@/lib/contact";
@@ -59,12 +58,12 @@ export function Navbar() {
       <div className="mx-auto flex h-24 w-full max-w-7xl items-center justify-between gap-3 px-4 md:px-6">
         <Link href="#inicio" className="flex shrink-0 items-center" aria-label="Laxmar - Inicio">
           <Image
-            src="/images/logo-laxmar.jpg"
+            src="/images/logo-laxmar.png"
             alt="Laxmar"
-            width={1024}
-            height={473}
+            width={892}
+            height={187}
             priority
-            className="h-14 w-auto md:h-20"
+            className="h-[5.25rem] w-auto md:h-[7.5rem]"
           />
         </Link>
 
@@ -93,7 +92,6 @@ export function Navbar() {
           <Button asChild className="hidden bg-laxmar-green text-white hover:opacity-90 sm:inline-flex">
             <Link href="#contacto">Cotizar</Link>
           </Button>
-          <ThemeToggle />
           <Button
             ref={menuButtonRef}
             variant="outline"

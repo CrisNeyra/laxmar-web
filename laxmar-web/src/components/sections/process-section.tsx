@@ -48,7 +48,7 @@ export function ProcessSection() {
         quality={70}
         className="object-cover object-center"
       />
-      <div className="absolute inset-0 bg-white/30 dark:bg-background/35" />
+      <div className="absolute inset-0 bg-white/30" />
       <div className="absolute inset-x-0 top-0 h-10 bg-gradient-to-b from-background/90 to-transparent md:h-14" />
       <div className="absolute inset-x-0 bottom-0 h-10 bg-gradient-to-t from-background/90 to-transparent md:h-14" />
 

@@ -1,4 +1,5 @@
 import { CONTACT } from "./contact";
+import { formatOriginDestination } from "./argentina-geo";
 
 export type SubmitStatus = "idle" | "submitting" | "success" | "error";
 
@@ -6,6 +7,10 @@ export type ContactFormData = {
   nombre: string;
   telefono: string;
   email: string;
+  origenProvincia: string;
+  origenLocalidad: string;
+  destinoProvincia: string;
+  destinoLocalidad: string;
   origenDestino: string;
   fecha: string;
   pasajeros: string;
@@ -14,12 +19,12 @@ export type ContactFormData = {
 };
 
 export type FieldErrors = Partial<
-  Record<keyof ContactFormData | "form", string>
+  Record<keyof ContactFormData | "form" | "origen" | "destino", string>
 >;
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSENGERS = 1;
-const MAX_PASSENGERS = 45;
+const MAX_PASSENGERS = 20;
 
 export function todayISODate(now = new Date()): string {
   const year = now.getFullYear();
@@ -33,11 +38,28 @@ export function digitsOnly(value: string): string {
 }
 
 export function parseFormData(formData: FormData): ContactFormData {
+  const origenProvincia = String(formData.get("origenProvincia") ?? "").trim();
+  const origenLocalidad = String(formData.get("origenLocalidad") ?? "").trim();
+  const destinoProvincia = String(formData.get("destinoProvincia") ?? "").trim();
+  const destinoLocalidad = String(formData.get("destinoLocalidad") ?? "").trim();
+  const composed =
+    String(formData.get("origenDestino") ?? "").trim() ||
+    formatOriginDestination(
+      origenProvincia,
+      origenLocalidad,
+      destinoProvincia,
+      destinoLocalidad,
+    );
+
   return {
     nombre: String(formData.get("nombre") ?? "").trim(),
     telefono: String(formData.get("telefono") ?? "").trim(),
     email: String(formData.get("email") ?? "").trim(),
-    origenDestino: String(formData.get("origenDestino") ?? "").trim(),
+    origenProvincia,
+    origenLocalidad,
+    destinoProvincia,
+    destinoLocalidad,
+    origenDestino: composed,
     fecha: String(formData.get("fecha") ?? "").trim(),
     pasajeros: String(formData.get("pasajeros") ?? "").trim(),
     mensaje: String(formData.get("mensaje") ?? "").trim(),
@@ -66,6 +88,14 @@ export function validateContactForm(
 
   if (!EMAIL_RE.test(data.email)) {
     errors.email = "Ingresá un correo electrónico válido.";
+  }
+
+  if (!data.origenProvincia || !data.origenLocalidad) {
+    errors.origen = "Seleccioná provincia y localidad de origen.";
+  }
+
+  if (!data.destinoProvincia || !data.destinoLocalidad) {
+    errors.destino = "Seleccioná provincia y localidad de destino.";
   }
 
   if (data.origenDestino.length < 3) {
@@ -101,6 +131,8 @@ export function buildMailtoUrl(data: ContactFormData): string {
     `Nombre: ${data.nombre}`,
     `Teléfono: ${data.telefono}`,
     `Email: ${data.email}`,
+    `Origen: ${data.origenLocalidad}, ${data.origenProvincia}`,
+    `Destino: ${data.destinoLocalidad}, ${data.destinoProvincia}`,
     `Origen → Destino: ${data.origenDestino}`,
     `Fecha: ${data.fecha}`,
     `Pasajeros: ${data.pasajeros}`,
@@ -140,6 +172,10 @@ export async function submitContactForm(
   payload.append("nombre", parsed.nombre);
   payload.append("telefono", parsed.telefono);
   payload.append("email", parsed.email);
+  payload.append("origenProvincia", parsed.origenProvincia);
+  payload.append("origenLocalidad", parsed.origenLocalidad);
+  payload.append("destinoProvincia", parsed.destinoProvincia);
+  payload.append("destinoLocalidad", parsed.destinoLocalidad);
   payload.append("origenDestino", parsed.origenDestino);
   payload.append("fecha", parsed.fecha);
   payload.append("pasajeros", parsed.pasajeros);

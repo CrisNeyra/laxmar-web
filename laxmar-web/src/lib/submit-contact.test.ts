@@ -19,9 +19,13 @@ function createFormData(entries: Record<string, string>): FormData {
 
 const validPayload = {
   nombre: "Juan Pérez",
-  telefono: "+54 9 11 6888-3430",
+  telefono: "+54 9 11 7821-1489",
   email: "juan@email.com",
-  origenDestino: "Buenos Aires → Mar del Plata",
+  origenProvincia: "Buenos Aires",
+  origenLocalidad: "La Plata",
+  destinoProvincia: "Buenos Aires",
+  destinoLocalidad: "Mar del Plata",
+  origenDestino: "La Plata, Buenos Aires → Mar del Plata, Buenos Aires",
   fecha: "2030-09-01",
   pasajeros: "20",
   mensaje: "Viaje de empresa",
@@ -34,9 +38,13 @@ describe("parseFormData", () => {
 
     expect(parseFormData(data)).toEqual({
       nombre: "Juan Pérez",
-      telefono: "+54 9 11 6888-3430",
+      telefono: "+54 9 11 7821-1489",
       email: "juan@email.com",
-      origenDestino: "Buenos Aires → Mar del Plata",
+      origenProvincia: "Buenos Aires",
+      origenLocalidad: "La Plata",
+      destinoProvincia: "Buenos Aires",
+      destinoLocalidad: "Mar del Plata",
+      origenDestino: "La Plata, Buenos Aires → Mar del Plata, Buenos Aires",
       fecha: "2030-09-01",
       pasajeros: "20",
       mensaje: "Viaje de empresa",
@@ -70,6 +78,13 @@ describe("validateContactForm", () => {
     expect(errors.pasajeros).toBeTruthy();
     expect(errors.consentimiento).toBeTruthy();
   });
+
+  it("rechaza más de 20 pasajeros", () => {
+    const errors = validateContactForm(
+      parseFormData(createFormData({ ...validPayload, pasajeros: "21" })),
+    );
+    expect(errors.pasajeros).toBeTruthy();
+  });
 });
 
 describe("todayISODate", () => {
@@ -84,7 +99,11 @@ describe("buildMailtoUrl", () => {
       nombre: "Ana",
       telefono: "11112222",
       email: "ana@email.com",
-      origenDestino: "CABA → Córdoba",
+      origenProvincia: "CABA",
+      origenLocalidad: "Palermo",
+      destinoProvincia: "Córdoba",
+      destinoLocalidad: "Córdoba",
+      origenDestino: "Palermo, CABA → Córdoba, Córdoba",
       fecha: "2026-10-01",
       pasajeros: "15",
       mensaje: "Grupo corporativo",

@@ -5,6 +5,10 @@ import Link from "next/link";
 import { Mail, MapPin, Phone, Send } from "lucide-react";
 import { useMemo, useState, type FormEvent } from "react";
 
+import {
+  ArgentinaLocationFields,
+  type LocationValue,
+} from "@/components/ui/argentina-location-fields";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -13,6 +17,7 @@ import {
   WhatsAppIcon,
 } from "@/components/ui/social-icons";
 import { Textarea } from "@/components/ui/textarea";
+import { formatOriginDestination } from "@/lib/argentina-geo";
 import { CONTACT, whatsappLink } from "@/lib/contact";
 import {
   buildMailtoUrl,
@@ -23,16 +28,36 @@ import {
   type FieldErrors,
   type SubmitStatus,
 } from "@/lib/submit-contact";
+import { cn } from "@/lib/utils";
 
 const inputClass = "h-11";
 
 const FORMSPREE_ID = process.env.NEXT_PUBLIC_FORMSPREE_ID ?? "";
 
+const emptyLocation: LocationValue = {
+  provinceId: "",
+  provinceName: "",
+  localityId: "",
+  localityName: "",
+};
+
+type TripTab = "origen" | "destino";
+
 export function ContactSection() {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errors, setErrors] = useState<FieldErrors>({});
+  const [activeTab, setActiveTab] = useState<TripTab>("origen");
+  const [origin, setOrigin] = useState<LocationValue>(emptyLocation);
+  const [destination, setDestination] = useState<LocationValue>(emptyLocation);
   const submitting = status === "submitting";
   const minDate = useMemo(() => todayISODate(), []);
+
+  const tripSummary = formatOriginDestination(
+    origin.provinceName,
+    origin.localityName,
+    destination.provinceName,
+    destination.localityName,
+  );
 
   const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -43,6 +68,8 @@ export function ContactSection() {
 
     if (Object.keys(nextErrors).length > 0) {
       setErrors(nextErrors);
+      if (nextErrors.origen) setActiveTab("origen");
+      else if (nextErrors.destino) setActiveTab("destino");
       setStatus("idle");
       return;
     }
@@ -60,13 +87,17 @@ export function ContactSection() {
 
     if (result === "success") {
       form.reset();
+      setOrigin(emptyLocation);
+      setDestination(emptyLocation);
+      setActiveTab("origen");
       setStatus("success");
       return;
     }
 
     if (result === "spam") {
-      // Silencioso: no revelar el honeypot ni fingir recepción real.
       form.reset();
+      setOrigin(emptyLocation);
+      setDestination(emptyLocation);
       setStatus("idle");
       return;
     }
@@ -94,7 +125,7 @@ export function ContactSection() {
         aria-hidden="true"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      <div className="absolute inset-0 bg-white/50" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -127,6 +158,12 @@ export function ContactSection() {
                 autoComplete="off"
               />
             </div>
+
+            <input type="hidden" name="origenProvincia" value={origin.provinceName} />
+            <input type="hidden" name="origenLocalidad" value={origin.localityName} />
+            <input type="hidden" name="destinoProvincia" value={destination.provinceName} />
+            <input type="hidden" name="destinoLocalidad" value={destination.localityName} />
+            <input type="hidden" name="origenDestino" value={tripSummary} />
 
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-1.5">
@@ -178,26 +215,87 @@ export function ContactSection() {
                 />
                 {errors.email && <FieldError message={errors.email} />}
               </div>
-              <div className="space-y-1.5 sm:col-span-2">
-                <label
-                  htmlFor="origenDestino"
-                  className="text-sm font-medium text-foreground"
+
+              <div className="space-y-3 sm:col-span-2">
+                <div
+                  role="tablist"
+                  aria-label="Origen y destino"
+                  className="grid grid-cols-2 gap-2 rounded-lg bg-muted p-1"
                 >
-                  Origen y destino
-                </label>
-                <Input
-                  id="origenDestino"
-                  name="origenDestino"
-                  required
-                  autoComplete="off"
-                  placeholder="Ej: Buenos Aires → Mar del Plata"
-                  className={inputClass}
-                  aria-invalid={Boolean(errors.origenDestino)}
-                />
-                {errors.origenDestino && (
-                  <FieldError message={errors.origenDestino} />
-                )}
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === "origen"}
+                    id="tab-origen"
+                    aria-controls="panel-origen"
+                    onClick={() => setActiveTab("origen")}
+                    className={cn(
+                      "rounded-md px-3 py-2 text-sm font-semibold transition",
+                      activeTab === "origen"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    Origen
+                  </button>
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={activeTab === "destino"}
+                    id="tab-destino"
+                    aria-controls="panel-destino"
+                    onClick={() => setActiveTab("destino")}
+                    className={cn(
+                      "rounded-md px-3 py-2 text-sm font-semibold transition",
+                      activeTab === "destino"
+                        ? "bg-background text-foreground shadow-sm"
+                        : "text-muted-foreground hover:text-foreground",
+                    )}
+                  >
+                    Destino
+                  </button>
+                </div>
+
+                <div
+                  id="panel-origen"
+                  role="tabpanel"
+                  aria-labelledby="tab-origen"
+                  hidden={activeTab !== "origen"}
+                >
+                  <ArgentinaLocationFields
+                    idPrefix="origen"
+                    legend="Origen del viaje"
+                    value={origin}
+                    onChange={setOrigin}
+                    error={errors.origen}
+                    disabled={submitting}
+                  />
+                </div>
+
+                <div
+                  id="panel-destino"
+                  role="tabpanel"
+                  aria-labelledby="tab-destino"
+                  hidden={activeTab !== "destino"}
+                >
+                  <ArgentinaLocationFields
+                    idPrefix="destino"
+                    legend="Destino del viaje"
+                    value={destination}
+                    onChange={setDestination}
+                    error={errors.destino}
+                    disabled={submitting}
+                  />
+                </div>
+
+                {tripSummary ? (
+                  <p className="rounded-md bg-laxmar-green/10 px-3 py-2 text-sm text-foreground">
+                    <span className="font-semibold text-laxmar-green">Ruta:</span>{" "}
+                    {tripSummary}
+                  </p>
+                ) : null}
               </div>
+
               <div className="space-y-1.5">
                 <label htmlFor="fecha" className="text-sm font-medium text-foreground">
                   Fecha de viaje
@@ -224,8 +322,8 @@ export function ContactSection() {
                   inputMode="numeric"
                   required
                   min={1}
-                  max={45}
-                  placeholder="Ej: 20"
+                  max={20}
+                  placeholder="Ej: 12"
                   className={inputClass}
                   aria-invalid={Boolean(errors.pasajeros)}
                 />
@@ -276,7 +374,7 @@ export function ContactSection() {
               disabled={submitting}
             >
               <Send className="h-4 w-4" />
-              {submitting ? "Enviando..." : "Enviar consulta"}
+              {submitting ? "Enviando..." : "Solicitar cotización"}
             </Button>
 
             {status === "success" && (
@@ -301,7 +399,7 @@ export function ContactSection() {
             )}
 
             {!FORMSPREE_ID && (
-              <p className="mt-3 text-center text-xs text-amber-700 dark:text-amber-400">
+              <p className="mt-3 text-center text-xs text-amber-700">
                 Formspree no está configurado: al enviar se abrirá tu correo.
               </p>
             )}

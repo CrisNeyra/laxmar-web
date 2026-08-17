@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { Footer } from "@/components/layout/footer";
-import { ThemeProvider } from "@/components/layout/theme-provider";
 import { WhatsAppFab } from "@/components/layout/whatsapp-fab";
 import { CONTACT } from "@/lib/contact";
 import "./globals.css";
@@ -49,9 +48,9 @@ export const metadata: Metadata = {
     canonical: siteUrl,
   },
   icons: {
-    icon: [{ url: "/images/logo-laxmar.jpg", type: "image/jpeg" }],
-    shortcut: "/images/logo-laxmar.jpg",
-    apple: "/images/logo-laxmar.jpg",
+    icon: [{ url: "/images/logo-laxmar.png", type: "image/png" }],
+    shortcut: "/images/logo-laxmar.png",
+    apple: "/images/logo-laxmar.png",
   },
   openGraph: {
     title: "Laxmar | Traslados de pasajeros provinciales y nacionales",
@@ -115,7 +114,6 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      suppressHydrationWarning
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
@@ -130,11 +128,9 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
-        <ThemeProvider>
-          {children}
-          <Footer />
-          <WhatsAppFab />
-        </ThemeProvider>
+        {children}
+        <Footer />
+        <WhatsAppFab />
         <Analytics />
       </body>
     </html>

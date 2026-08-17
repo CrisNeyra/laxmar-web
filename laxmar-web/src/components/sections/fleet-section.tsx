@@ -1,7 +1,6 @@
 import Image from "next/image";
 import {
   BadgeCheck,
-  Bus,
   FileCheck2,
   ShieldCheck,
   Signal,
@@ -24,27 +23,15 @@ const fleet: FleetUnit[] = [
   {
     icon: Van,
     name: "Toyota Hiace",
-    capacity: "12 pasajeros",
+    capacity: "hasta 12 pasajeros",
     features: ["A/C", "Cinturones", "Valijero", "Ideal grupos chicos"],
   },
   {
     icon: Van,
     name: "Mercedes-Benz Sprinter",
-    capacity: "19 pasajeros",
+    capacity: "hasta 20 pasajeros",
     features: ["A/C dual", "USB", "Butacas reclinables", "Equipaje amplio"],
     highlight: true,
-  },
-  {
-    icon: Bus,
-    name: "Mini-Bus",
-    capacity: "24 pasajeros",
-    features: ["A/C", "Butacas reclinables", "Porta-equipaje", "Media distancia"],
-  },
-  {
-    icon: Bus,
-    name: "Bus larga distancia",
-    capacity: "45 pasajeros",
-    features: ["A/C", "Baño", "Butacas semi-cama", "Larga distancia"],
   },
 ];
 
@@ -92,7 +79,7 @@ export function FleetSection() {
         aria-hidden="true"
         className="object-cover"
       />
-      <div className="absolute inset-0 bg-white/50 dark:bg-background/50" />
+      <div className="absolute inset-0 bg-white/50" />
       <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent md:h-32" />
       <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-background to-transparent md:h-32" />
 
@@ -105,7 +92,7 @@ export function FleetSection() {
             Unidades equipadas para cada viaje
           </h2>
           <p className="mt-4 text-base text-foreground md:text-lg">
-            De 12 a 45 pasajeros. Mantenimiento riguroso y conductores
+            De hasta 20 pasajeros. Mantenimiento riguroso y conductores
             habilitados para que vos sólo te preocupes por disfrutar el destino.
           </p>
         </div>
