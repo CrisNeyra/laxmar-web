@@ -24,7 +24,7 @@ export type FieldErrors = Partial<
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const MIN_PASSENGERS = 1;
-const MAX_PASSENGERS = 20;
+const MAX_PASSENGERS = 19;
 
 export function todayISODate(now = new Date()): string {
   const year = now.getFullYear();

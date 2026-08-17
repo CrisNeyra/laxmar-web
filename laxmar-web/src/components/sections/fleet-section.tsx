@@ -22,16 +22,22 @@ type FleetUnit = {
 const fleet: FleetUnit[] = [
   {
     icon: Van,
-    name: "Toyota Hiace",
-    capacity: "hasta 12 pasajeros",
-    features: ["A/C", "Cinturones", "Valijero", "Ideal grupos chicos"],
+    name: "Mercedes-Benz Sprinter 517",
+    capacity: "19 pasajeros",
+    features: ["A/C", "Cinturones", "Valijero", "Ideal grupos medianos"],
   },
   {
     icon: Van,
-    name: "Mercedes-Benz Sprinter",
-    capacity: "hasta 20 pasajeros",
+    name: "Mercedes-Benz Sprinter 517 2020",
+    capacity: "19 pasajeros",
     features: ["A/C dual", "USB", "Butacas reclinables", "Equipaje amplio"],
     highlight: true,
+  },
+  {
+    icon: Van,
+    name: "IVECO Daily",
+    capacity: "19 pasajeros",
+    features: ["A/C", "Cinturones", "Porta-equipaje", "Ideal grupos chicos"],
   },
 ];
 
@@ -92,12 +98,12 @@ export function FleetSection() {
             Unidades equipadas para cada viaje
           </h2>
           <p className="mt-4 text-base text-foreground md:text-lg">
-            De hasta 20 pasajeros. Mantenimiento riguroso y conductores
+            De hasta 19 pasajeros. Mantenimiento riguroso y conductores
             habilitados para que vos sólo te preocupes por disfrutar el destino.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {fleet.map((unit) => (
             <article
               key={unit.name}

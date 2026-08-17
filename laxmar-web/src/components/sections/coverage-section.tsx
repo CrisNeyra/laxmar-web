@@ -52,7 +52,7 @@ export function CoverageSection() {
               Cobertura
             </p>
             <h2 className="mt-3 text-3xl font-bold leading-tight md:text-5xl">
-              Provincial y nacional, con base operativa en Buenos Aires
+              Provincial y nacional, con base operativa en Mar del Plata
             </h2>
             <p className="mt-4 max-w-xl text-base text-white/80 md:text-lg">
               Diseñamos cada operativo a medida del cliente: viajes one-way,

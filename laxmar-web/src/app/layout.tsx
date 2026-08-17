@@ -99,7 +99,7 @@ const jsonLd = {
   telephone: CONTACT.phoneHref,
   address: {
     "@type": "PostalAddress",
-    addressLocality: "Buenos Aires",
+    addressLocality: "Mar del Plata",
     addressCountry: "AR",
   },
   areaServed: "Argentina",

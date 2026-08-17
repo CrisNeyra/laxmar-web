@@ -27,7 +27,7 @@ const validPayload = {
   destinoLocalidad: "Mar del Plata",
   origenDestino: "La Plata, Buenos Aires → Mar del Plata, Buenos Aires",
   fecha: "2030-09-01",
-  pasajeros: "20",
+  pasajeros: "19",
   mensaje: "Viaje de empresa",
   consentimiento: "on",
 };
@@ -46,7 +46,7 @@ describe("parseFormData", () => {
       destinoLocalidad: "Mar del Plata",
       origenDestino: "La Plata, Buenos Aires → Mar del Plata, Buenos Aires",
       fecha: "2030-09-01",
-      pasajeros: "20",
+      pasajeros: "19",
       mensaje: "Viaje de empresa",
       consentimiento: true,
     });
@@ -79,9 +79,9 @@ describe("validateContactForm", () => {
     expect(errors.consentimiento).toBeTruthy();
   });
 
-  it("rechaza más de 20 pasajeros", () => {
+  it("rechaza más de 19 pasajeros", () => {
     const errors = validateContactForm(
-      parseFormData(createFormData({ ...validPayload, pasajeros: "21" })),
+      parseFormData(createFormData({ ...validPayload, pasajeros: "20" })),
     );
     expect(errors.pasajeros).toBeTruthy();
   });

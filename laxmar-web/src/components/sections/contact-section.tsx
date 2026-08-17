@@ -247,9 +247,8 @@ export function ContactSection() {
                     onClick={() => setActiveTab("destino")}
                     className={cn(
                       "rounded-md px-3 py-2 text-sm font-semibold transition",
-                      activeTab === "destino"
-                        ? "bg-background text-foreground shadow-sm"
-                        : "text-muted-foreground hover:text-foreground",
+                      "bg-laxmar-blue text-white shadow-sm hover:opacity-95",
+                      activeTab === "destino" && "ring-2 ring-laxmar-green/60 ring-offset-1",
                     )}
                   >
                     Destino
@@ -266,7 +265,12 @@ export function ContactSection() {
                     idPrefix="origen"
                     legend="Origen del viaje"
                     value={origin}
-                    onChange={setOrigin}
+                    onChange={(next) => {
+                      setOrigin(next);
+                      if (next.provinceId && next.localityId) {
+                        setActiveTab("destino");
+                      }
+                    }}
                     error={errors.origen}
                     disabled={submitting}
                   />
@@ -322,7 +326,7 @@ export function ContactSection() {
                   inputMode="numeric"
                   required
                   min={1}
-                  max={20}
+                  max={19}
                   placeholder="Ej: 12"
                   className={inputClass}
                   aria-invalid={Boolean(errors.pasajeros)}

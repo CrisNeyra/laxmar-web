@@ -24,7 +24,7 @@ const faqs = [
   {
     question: "¿Qué capacidad tienen las unidades?",
     answer:
-      "Trabajamos con flota de hasta 20 pasajeros: Toyota Hiace y Mercedes-Benz Sprinter. Te sugerimos la unidad según cantidad de pasajeros, equipaje y tipo de viaje.",
+      "Trabajamos con flota de hasta 19 pasajeros: Mercedes-Benz Sprinter 517 (incluida versión 2020) e IVECO Daily. Te sugerimos la unidad según cantidad de pasajeros, equipaje y tipo de viaje.",
   },
   {
     question: "¿Cómo se confirma y se paga?",
