@@ -22,16 +22,16 @@ type FleetUnit = {
 const fleet: FleetUnit[] = [
   {
     icon: Van,
-    name: "Mercedes-Benz Sprinter 517",
+    name: "Mercedes-Benz Sprinter 517 2026",
     capacity: "19 pasajeros",
     features: ["A/C", "Cinturones", "Valijero", "Ideal grupos medianos"],
+    highlight: true,
   },
   {
     icon: Van,
     name: "Mercedes-Benz Sprinter 517 2020",
     capacity: "19 pasajeros",
     features: ["A/C dual", "USB", "Butacas reclinables", "Equipaje amplio"],
-    highlight: true,
   },
   {
     icon: Van,

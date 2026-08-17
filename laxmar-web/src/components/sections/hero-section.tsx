@@ -132,7 +132,7 @@ export function HeroSection() {
             width={892}
             height={187}
             priority
-            className="h-16 w-auto md:h-24 lg:h-28 [filter:drop-shadow(0_0_10px_rgba(46,160,140,0.45))_drop-shadow(0_0_14px_rgba(28,42,74,0.55))_drop-shadow(0_2px_8px_rgba(0,0,0,0.45))]"
+            className="h-16 w-auto md:h-24 lg:h-28"
           />
           <h1 className="mt-5 text-2xl font-semibold leading-tight text-white/95 md:mt-6 md:text-4xl lg:text-5xl">
             Traslados seguros a cualquier punto del país
