@@ -1,5 +1,5 @@
 export const CONTACT = {
-  email: "contacto@laxmar.com.ar",
+  email: "Laxmarviajes@gmail.com",
   phoneLabel: "4265-1842",
   phoneHref: "+541142651842",
   whatsappLabel: "223-581-5805",

@@ -65,27 +65,34 @@ export function HeroSection() {
     videoRefs.current.forEach((video, idx) => {
       if (!video) return;
       if (idx === current) {
+        // Reinicia al activar para que el loop 1→2→1 sea continuo
+        if (video.ended || video.currentTime > 0.05) {
+          video.currentTime = 0;
+        }
         void video.play().catch(() => {});
       } else {
         video.pause();
+        video.currentTime = 0;
       }
     });
   }, [current, videosEnabled, reduceMotion]);
+
+  const advanceFrom = (index: number) => {
+    if (!videosEnabled || reduceMotion || index !== current) return;
+    setCurrent((prev) => (prev + 1) % heroVideos.length);
+  };
 
   const handleTimeUpdate = (index: number) => {
     if (!videosEnabled || reduceMotion || index !== current) return;
     const video = videoRefs.current[index];
     if (!video || Number.isNaN(video.duration) || !video.duration) return;
     if (video.currentTime >= video.duration - CROSSFADE_LEAD_S) {
-      setCurrent((prev) =>
-        prev === index ? (prev + 1) % heroVideos.length : prev,
-      );
+      advanceFrom(index);
     }
   };
 
   const handleEnded = (index: number) => {
-    if (!videosEnabled || reduceMotion || index !== current) return;
-    setCurrent((prev) => (prev + 1) % heroVideos.length);
+    advanceFrom(index);
   };
 
   return (
@@ -129,8 +136,8 @@ export function HeroSection() {
           <Image
             src="/images/logo-laxmar.png"
             alt="Laxmar"
-            width={892}
-            height={187}
+            width={1200}
+            height={247}
             priority
             className="h-16 w-auto md:h-24 lg:h-28"
           />

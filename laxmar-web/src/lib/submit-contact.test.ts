@@ -110,7 +110,7 @@ describe("buildMailtoUrl", () => {
       consentimiento: true,
     });
 
-    expect(url).toContain("mailto:contacto@laxmar.com.ar");
+    expect(url).toContain("mailto:Laxmarviajes@gmail.com");
     expect(url).toContain(encodeURIComponent("Cotización de viaje - Laxmar"));
     expect(url).toContain(encodeURIComponent("Ana"));
   });

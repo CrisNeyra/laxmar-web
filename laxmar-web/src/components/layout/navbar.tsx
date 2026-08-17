@@ -60,8 +60,8 @@ export function Navbar() {
           <Image
             src="/images/logo-laxmar.png"
             alt="Laxmar"
-            width={892}
-            height={187}
+            width={1200}
+            height={247}
             priority
             className="h-[3.0125rem] w-auto md:h-[4.303125rem]"
           />
